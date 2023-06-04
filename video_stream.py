@@ -1,16 +1,10 @@
-import threading
-import time
-import gunicorn
-
 import cv2
-from flask import Flask, render_template, Response
-from multiprocessing import Process
 import threading
 import time
+from flask import Flask, render_template, Response
 
 
 app = Flask(__name__)
-exit_event = False
 
 def protocol():
     time.sleep(1)
@@ -20,7 +14,7 @@ def protocol():
 
 
     def generate_frames():
-        while not exit_event:
+        while True:
             # Capture video frame-by-frame
             success, frame = video_capture.read()
             # time.sleep(5)
@@ -52,14 +46,4 @@ def protocol():
     app.run(host='0.0.0.0')
 
 
-def stop():
-    global exit_event
-    print('here')
-    time.sleep(15)
-    print('here 2')
-    exit_event = True
-
-
-t = threading.Thread(target=protocol())
-t.run()
-stop()
+protocol()
